@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {initial,defaultMandate,decide,verify,days} from '../app/core/engine.mjs';
+test('initial runway is 12.4 days',()=>assert.equal(days(initial().reserve,initial().burn),12.4));
+test('$4 expense at floor requires $4 but rail chooses $5',()=>{const r=decide({...initial(),reserve:26000000n},defaultMandate());assert.equal(r.required,4000000n);assert.equal(r.adjustment,5000000n);assert.equal(r.state,'ACTION REQUIRED');});
+test('$15 restoration exceeds $10 permission',()=>assert.equal(decide({...initial(),reserve:15000000n},defaultMandate()).state,'NEEDS OWNER'));
+test('net proceeds below shortfall fail closed',()=>assert.equal(decide({...initial(),reserve:26000000n},defaultMandate(),{minimum:5000000n,sell:5000000n,net:3900000n,valid:true}).state,'BLOCKED'));
+test('tiny wallet cannot preserve investment mandate',()=>assert.equal(decide({...initial(),reserve:250000n,equity:6000000n,burn:500000n},defaultMandate()).state,'NEEDS OWNER'));
+test('audit acknowledgement and gas required',()=>{assert.equal(decide({...initial(),reserve:26000000n},{...defaultMandate(),auditAcknowledged:false}).state,'NEEDS OWNER');assert.equal(decide({...initial(),reserve:26000000n,gas:0n},defaultMandate()).state,'BLOCKED');});
+test('approval alone is not settlement',()=>{const before=initial(),quote={sell:5000000n,net:5000000n},after={...before,reserve:42200000n,equity:65000000n};assert.equal(verify(before,after,quote,{historyConfirmed:true,swapConfirmed:false}),false);assert.equal(verify(before,after,quote,{historyConfirmed:true,swapConfirmed:true}),true);});
+test('runway display rounds 26 / 3 to 8.67',()=>assert.equal(days(26000000n,3000000n),8.67));
+test('quote sell amount cannot exceed autonomous cap',()=>assert.equal(decide({...initial(),reserve:26000000n},defaultMandate(),{minimum:5000000n,sell:11000000n,net:11000000n,valid:true}).state,'NEEDS OWNER'));
