@@ -56,3 +56,15 @@ Prepared a fresh sanitized Git history for 0xBaqi/driftmark. The initial commit 
 Deployed the static judge-facing shell to https://driftmark-chi.vercel.app in Vercel production. Anonymous root and module requests return 200; .env, original experiment paths, x402 paid-response and private backup paths return 404. The public demo remains explicitly simulated. No live financial execution was enabled.
 
 The owner explicitly authorized automatic deployments. Verified Vercel’s GitHub link to 0xBaqi/driftmark and configured production deployment from main. A documentation push is used to verify the connected deployment flow; no private environment or local session files are published.
+
+## Visual identity and recovery motion — 2026-10-06
+
+Updated the existing static application in place. Near-black surfaces, warm yellow runway/threshold accents, distinct spending/investment/execution cards, keyboard focus states, and matching PWA icon/theme. No framework, dependencies, execution adapters, policy thresholds or monetary arithmetic changed.
+
+The signature fixture now starts at the actual 12.4-day baseline ($37.20). A clearly labeled $11.20 simulated research expense drains reserve to $26 (8.67 days). The unchanged engine computes a $4 shortfall and $5 executable minimum. A generator yields observe, expense, decision, quote, execution, verification and restoration checkpoints; the view waits for each animation completion. Reserve is credited only after the existing verifier accepts the simulated history, swap and balance deltas. Final reserve is $31 (10.33 days), with $65 NVIDIA.
+
+HEALTHY at completion describes a verified recovery above the floor. The conservative engine classification remains WATCH within its two-day buffer and is preserved as `receipt.final.mandateState`; the hero explicitly reports the remaining 0.33-day buffer. Owner or invalid-quote checkpoints end the sequence without an adjustment. M0 failure receipts retain both USDC/Permit2 and U/EIP-3009 signing/rejection findings and address-book code 351703, unchanged balances and zero settled spend.
+
+Motion uses requestAnimationFrame interpolation and Web Animations completion promises. Reduced-motion users receive immediate state updates and the complete activity trail. Hidden-tab transitions finish directly; changing the preference finishes an active stage. No arbitrary sleep-based execution sequence remains. Service-worker cache version includes the new story module. Local server supports an optional PORT environment variable (default 4173).
+
+Validation: all nine original engine tests plus five new story tests pass. Browser checks cover 12.4 → 8.7 → 10.3 recovery, separate verification presentation, unchanged balances in both blocked scenarios, onboarding, keyboard activation and owner pause. Narrow viewport has no horizontal overflow. Browser error log was empty. Reduced-motion branches and CSS were reviewed; OS-level preference switching and native PWA installation were not exercised.
