@@ -4,18 +4,18 @@ const $=s=>document.querySelector(s);
 let state=initial(),mandate=defaultMandate(),receipt={},running=false,events=0;
 let display={reserve:Number(state.reserve),equity:Number(state.equity)};
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-const names={ready:'Observe',expense:'Expense',decision:'Decide',quote:'Quote',execute:'Execute',verify:'Verify',restore:'Restore',complete:'Verified',owner:'Awaiting owner',blocked:'Stopped'};
+const names={ready:'Observe',expense:'Expense',decision:'Decide',quote:'Quote',execute:'Execute',verify:'Verify',restore:'Restore',complete:'Recovery verified','no-adjustment':'No adjustment needed',owner:'Awaiting owner',blocked:'Stopped'};
 function statusView(status){
   const key=status.toLowerCase().replaceAll(' ','-');
   if(document.body.dataset.state===key)return;
   document.body.dataset.state=key;
-  $('#status').textContent=status;
+  $('#status').textContent=status;$('#mobile-policy').textContent=status;
   $('#summary').textContent={HEALTHY:'Funded to work. Free to focus.',WATCH:'Within the floor. Less room for surprises.','ACTION REQUIRED':'Below the floor. A recovery is required.',BLOCKED:'Execution stopped. Your capital stays put.','NEEDS OWNER':'Paused at your authorization boundary.'}[status];
   $('#foot-state').textContent={HEALTHY:'Mandate satisfied',WATCH:'Mandate satisfied · narrow buffer','ACTION REQUIRED':'Mandate breached',BLOCKED:'Blocked · $0 moved','NEEDS OWNER':'Owner approval required'}[status];
 }
 function paint(){
   const runway=display.reserve/Number(state.burn), max=Math.max(20,mandate.floor*1.4);
-  $('#days').textContent=runway.toFixed(1);
+  $('#days').textContent=runway.toFixed(1);$('#mobile-runway').textContent=runway.toFixed(2)+' days · $'+(display.reserve/1e6).toFixed(2);
   $('#reserve').textContent='$'+(display.reserve/1e6).toFixed(2);
   $('#equity').textContent='$'+(display.equity/1e6).toFixed(2);
   $('#runway-fill').style.width=Math.min(100,runway/max*100)+'%';
@@ -40,7 +40,7 @@ function event(title,description,icon='↗'){
   h.textContent=title;p.textContent=description;time.textContent='SIMULATED';body.append(h,p);el.append(badge,body,time);$('#events').prepend(el);$('#activity-count').textContent=String(events).padStart(2,'0');
 }
 function stage(phase,title,detail){
-  document.body.dataset.phase=phase;$('#story-phase').textContent=names[phase]||'Ready';
+  document.body.dataset.phase=phase;$('#story-phase').textContent=names[phase]||'Ready';$('#mobile-phase').textContent=names[phase]||'Ready';
   $('.orbit-icon').textContent=phase==='complete'?'✓':phase==='blocked'?'×':phase==='owner'?'Ⅱ':'↗';
   $('#story-title').textContent=title;$('#explanation').textContent=detail;
   const index=['ready','expense','decision','quote','execute','verify','restore','complete'].indexOf(phase);
@@ -72,9 +72,9 @@ async function transfer(){
   const finish=()=>animation.finish();document.addEventListener('visibilitychange',finish,{once:true});reduced.addEventListener('change',finish,{once:true});
   try{await animation.finished;}finally{document.removeEventListener('visibilitychange',finish);reduced.removeEventListener('change',finish);}
 }
-function reset(){state=initial();receipt={mode:'FIXTURE — no live funds',observed:state,mandate,m0Context:m0};$('#events').replaceChildren();events=0;stage('ready','Built to keep going.','An expense can shorten the runway. Watch Atlas restore it within your rules.');event('Atlas is ready to work','12.4 days at $3 per day. NVIDIA capital and BNB execution reserve have separate jobs.','✓');render();}
+function reset(){state=initial();receipt={mode:'FIXTURE — no live funds',observed:state,mandate,m0Context:m0};$('#events').replaceChildren();events=0;stage('ready','Built to keep going.','Standard deterministic replay: $37.20 reserve, $70 NVIDIA, $11.20 expense. Your selected mandate determines the outcome.');event('Atlas is ready to work','12.4 days at $3 per day. NVIDIA capital and BNB execution reserve have separate jobs.','✓');render();}
 $('#reset').onclick=()=>{if(!running)reset();};
-$('#scenario').onchange=()=>{const v=$('#scenario').value;$('#scenario-description').textContent={recovery:'12.4 days → expense → 8.7 days → verified recovery to 10.3 days. Uses your current mandate.',owner:'Atlas has $15 reserve. Restoring the default floor needs $15; the default autonomous limit is $10.',x402:'Both tested payment rails reached signing but returned payment_rejected. $0 settled.',address:'A 0.1 U transfer hits the address-book policy. Blocked before funds move.'}[v];$('#play').firstChild.textContent=v==='recovery'?'Run the recovery story ':'Run this scenario ';};
+$('#scenario').onchange=()=>{const v=$('#scenario').value;$('#scenario-description').textContent={recovery:'Standard deterministic replay resets balances to $37.20 reserve / $70 NVIDIA, then spends $11.20. Your selected mandate determines recovery, owner pause, block, or no adjustment.',owner:'Atlas has $15 reserve. Restoring the default floor needs $15; the default autonomous limit is $10.',x402:'Both tested payment rails reached signing but returned payment_rejected. $0 settled.',address:'A 0.1 U transfer hits the address-book policy. Blocked before funds move.'}[v];$('#play').firstChild.textContent=v==='recovery'?'Run the recovery story ':'Run this scenario ';};
 async function play(){
   if(running)return;running=true;['#play','#hero-play','#reset','#scenario','#setup'].forEach(s=>$(s).disabled=true);
   $('#runway').scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
@@ -87,7 +87,7 @@ async function play(){
         else{state=frame.state;render(frame.status);}
         $('#receipt').textContent=serialize(receipt);
         if(frame.phase==='execute'){if(matchMedia('(max-width:650px)').matches&&!reduced.matches)$('.operating').scrollIntoView({behavior:'smooth',block:'start'});await transfer();}
-        else if(!['expense','restore','complete','owner','blocked'].includes(frame.phase))await dwell(frame.phase==='verify'?2100:frame.phase==='decision'?2400:1400);
+        else if(!['expense','restore','complete','no-adjustment','owner','blocked'].includes(frame.phase))await dwell(frame.phase==='verify'?2100:frame.phase==='decision'?2400:1400);
       }
     }else if(scenario==='owner'){
       state.reserve=15000000n;const decision=decide(state,mandate);receipt={mode:'SIMULATED fixture replay',scenario,mandate:{...mandate},observed:{...state},decision,spent:0n};

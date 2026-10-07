@@ -10,7 +10,7 @@ test('recovery follows expense, quote, execution and verification before crediti
   for(const f of frames.slice(1,6)){assert.equal(f.state.reserve,26000000n);assert.equal(f.state.equity,70000000n);}
   const last=frames.at(-1);
   assert.equal(last.state.reserve,31000000n);assert.equal(last.state.equity,65000000n);
-  assert.equal(last.status,'HEALTHY');assert.equal(last.receipt.final.mandateState,'WATCH');
+  assert.equal(last.status,'WATCH');assert.equal(last.title,'Recovery verified');assert.equal(last.receipt.final.mandateState,'WATCH');
   assert.equal(last.receipt.recoveryVerified,true);assert.equal(last.receipt.trigger.amount,11200000n);
   assert.equal(last.receipt.decision.required,4000000n);assert.equal(last.receipt.decision.adjustment,5000000n);
   assert.equal(last.receipt.verification.transactionHash,null);
@@ -29,6 +29,7 @@ test('a changed mandate cannot produce a false restored-runway claim',()=>{
 });
 test('a satisfied mandate stops without selling any NVIDIA',()=>{
   const frames=[...recovery({...defaultMandate(),floor:6})];
+  assert.equal(frames.at(-1).phase,'no-adjustment');assert.equal(frames.at(-1).title,'No adjustment needed.');assert.equal(frames.at(-1).receipt.verification,null);assert.equal(frames.at(-1).receipt.recoveryVerified,undefined);assert.match(frames[1].detail,/remains satisfied/);
   assert.equal(frames.at(-1).state.equity,70000000n);assert.deepEqual(frames.at(-1).receipt.executionLegs,[]);
 });
 test('both blocked findings preserve all balances and report zero settled spend',()=>{

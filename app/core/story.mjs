@@ -4,19 +4,19 @@ import {initial, decide, days, verify, money} from './engine.mjs';
 // its animation before requesting the next one. No funds or external APIs involved.
 export function* recovery(mandate) {
   let state = initial();
-  const receipt = {mode:'SIMULATED fixture replay — no live funds', scenario:'recovery', chainId:56,
+  const receipt = {mode:'SIMULATED standard deterministic replay fixture — no live funds', scenario:'recovery', chainId:56,
     mandate:{...mandate}, baseline:{...state}, executionLegs:[], verification:null};
   const frame = (phase, title, detail, extra={}) => ({phase, title, detail, state:{...state}, receipt, ...extra});
   yield frame('ready', 'Atlas is funded to work.', '$37.20 operating reserve · 12.4 days · $70 NVIDIA capital.');
   state.reserve = 26000000n;
   receipt.trigger = {type:'service-expense', amount:11200000n, simulated:true};
   receipt.observed = {...state};
-  yield frame('expense', '$11.20 research expense.', 'Operating reserve drains to $26.00. Runway crosses the mandate floor.');
+  yield frame('expense', '$11.20 research expense.', `Operating reserve drains to $26.00 (8.67 days). ${days(state.reserve,state.burn)<mandate.floor?'Runway crosses the selected mandate floor.':'The selected mandate floor remains satisfied.'}`);
   const decision = decide(state, mandate);
   receipt.decision = decision;
   if (decision.state !== 'ACTION REQUIRED') {
-    yield frame(decision.state === 'NEEDS OWNER' ? 'owner' : decision.state === 'BLOCKED' ? 'blocked' : 'complete',
-      decision.state === 'NEEDS OWNER' ? 'Paused for your authorization.' : decision.state === 'BLOCKED' ? 'Execution stopped. $0 adjusted.' : 'Mandate already satisfied.', decision.reason, {status:decision.state});
+    yield frame(decision.state === 'NEEDS OWNER' ? 'owner' : decision.state === 'BLOCKED' ? 'blocked' : 'no-adjustment',
+      decision.state === 'NEEDS OWNER' ? 'Paused for your authorization.' : decision.state === 'BLOCKED' ? 'Execution stopped. $0 adjusted.' : 'No adjustment needed.', decision.reason, {status:decision.state});
     return;
   }
   yield frame('decision', `${money(decision.required)} needed. ${money(decision.adjustment)} executable.`,
@@ -37,10 +37,10 @@ export function* recovery(mandate) {
   state = after;
   receipt.final = {...state, mandateState:decide(state,mandate).state, runway:days(state.reserve,state.burn)};
   receipt.recoveryVerified = true;
-  yield frame('restore','Verified in simulation. Runway restored.', '$31.00 reserve · 10.33 days · $65.00 NVIDIA preserved.', {status:decide(state,mandate).state});
-  // HEALTHY describes the verified recovery outcome. The receipt preserves the
-  // engine's conservative WATCH buffer classification; no policy rule changes.
-  yield frame('complete','Back within mandate.', '10.33 days verified. The floor is restored; the remaining buffer is 0.33 days.', {status:'HEALTHY'});
+  const runway = days(state.reserve,state.burn);
+  const detail = `${money(state.reserve)} reserve · ${runway} days · ${money(state.equity)} NVIDIA preserved.`;
+  yield frame('restore','Recovery verified in simulation.', detail, {status:receipt.final.mandateState});
+  yield frame('complete','Recovery verified', `${detail} The selected ${mandate.floor}-day floor is restored.`, {status:receipt.final.mandateState});
 }
 
 export function blockedResult(scenario, state) {

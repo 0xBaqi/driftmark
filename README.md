@@ -18,9 +18,9 @@ Open http://localhost:4173. The server serves only `app/`; it cannot serve the r
 ## Judge walkthrough
 
 1. Atlas opens at 12.4 days: $37.20 operating reserve, $70 NVIDIA reference exposure, separate BNB execution reserve.
-2. Run the recovery story. This explicitly loads a $30 / $70 fixture.
-3. A simulated $4 expense leaves $26 and 8.67 days. The $4 shortfall meets a tested $5 route minimum, so the adjustment is $5.
-4. Simulated approval and swap legs precede fixture history/balance verification. $31 reserve yields 10.33 days; $65 NVIDIA remains. WATCH means the floor is met with less than two additional days of buffer.
+2. Run the recovery story. This explicitly loads the standard deterministic $37.20 reserve / $70 NVIDIA fixture, retaining your selected mandate.
+3. With the default mandate, a simulated $11.20 expense leaves $26 and 8.67 days. The $4 shortfall meets a tested $5 route minimum, so the adjustment is $5.
+4. Simulated approval and swap legs precede fixture history/balance verification. $31 reserve yields 10.33 days; $65 NVIDIA remains. The policy remains WATCH; the separate action outcome is “Recovery verified.” WATCH means the floor is met with less than two additional days of buffer. Other mandates may pause, block, or require no adjustment.
 5. Replay x402 or address-book failures: zero settled spend. Review the receipt.
 6. Create Atlas to explore a local mandate. Reserve/Balanced/Growth set fixture composition and minimum equity allocation. Reload resets the demo; no wallet is funded and nothing is persisted.
 
@@ -34,9 +34,13 @@ Open http://localhost:4173. The server serves only `app/`; it cannot serve the r
 
 ## M0 preservation and credentials
 
-All original root experiment filenames and captured results remain. Original script bytes are backed up under ignored `work/private-m0/`. Runtime scripts now read `BINANCE_RWA_API_KEY` and `BINANCE_RWA_SECRET_KEY`; local `.env` is ignored. Run a read-only experiment with `node --env-file=.env nvda-price.mjs` on a supporting Node version. Never expose these variables through browser builds.
+Original experiments and private captures are preserved in the original private lab; the public checkout contains sanitized scripts only. `quote-nvdaon.mjs` retains its historical filename but currently requests **NVDAB → USDT**, with a fixed historical amount and wallet, not NVDAon. It is a read-only quote request, not execution. Runtime scripts now read `BINANCE_RWA_API_KEY` and `BINANCE_RWA_SECRET_KEY`; local `.env` is ignored. Run a read-only experiment with `node --env-file=.env nvda-price.mjs` on a supporting Node version. Never expose these variables through browser builds.
 
 Raw x402 captures are ignored because signed authorizations and headers can be sensitive. Preserve them privately; publish the redacted DEVEX findings. The original folder had no `.git` directory. Do not publish private backups, .env, or raw payment captures. Rotate embedded credentials before eventual public release if they were shared elsewhere.
+
+## Evidence and submission
+
+See [MAINNET_EVIDENCE.md](MAINNET_EVIDENCE.md) for retained historical evidence, token addresses, classifications, and missing transaction/provenance records. [DEVEX.md](DEVEX.md) is a journal/raw evidence source; the builder must write the final DevEx submission from firsthand experience.
 
 ## Delivery status
 

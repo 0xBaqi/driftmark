@@ -1,5 +1,7 @@
 # DRIFTMARK DevEx journal
 
+> Journal/raw evidence only — not the final DevEx submission. The builder must write the final submission report from firsthand experience. Existing observations and implementation notes are retained; they are not all independently proven. See [MAINNET_EVIDENCE.md](MAINNET_EVIDENCE.md).
+
 ## Evidence policy
 
 M0 findings below come from the supplied project handoff and locally retained scripts/captures. They are historical observations, not freshly re-executed claims. M1 behavior is explicitly simulated. No fabricated transaction hashes, settlement success, Agent Studio integration, or live balances.
@@ -25,7 +27,7 @@ M0 findings below come from the supplied project handoff and locally retained sc
 
 Historical wallet fixture only: 5.77720879 USDC; 0.250200161469125604 U; 0.024940642253004837 NVDAB; 0.000958310243020398 BNB. This is not a current production balance. A $5 liquidation in this tiny wallet cannot be represented as preserving a 50–70% equity mandate.
 
-## M1 — 2026-10-06
+## M1 — 2026-10-06 (historical; fixture values superseded below)
 
 Inspected the existing project before edits. It was an experiment folder without Git history or an application package. Preserved root scripts/results. Backed up original scripts privately, replaced literal credentials with environment lookups, and ignored `.env`, private backups, and raw x402 captures. No secret values were printed intentionally or committed.
 
@@ -43,7 +45,7 @@ Signature recovery: explicit $30 reserve + $70 equity fixture; $4 expense; 8.67 
 - Independent history and balance reconciliation; submitted or approved is never settled.
 - Real x402 remains BLOCKED until provider settlement and quota behavior are resolved.
 - Real funding/onboarding, persistent mandates, authorization budget model and owner approval workflow.
-- Public repository and HTTPS deployment destination not supplied; local preview is not a public submission.
+- Historical deployment blocker resolved: public source and HTTPS fixture demo are available (see Public release below). Live execution remains unimplemented.
 - Agent Studio only if a technically real role emerges.
 ## M1 validation
 
@@ -63,8 +65,14 @@ Updated the existing static application in place. Near-black surfaces, warm yell
 
 The signature fixture now starts at the actual 12.4-day baseline ($37.20). A clearly labeled $11.20 simulated research expense drains reserve to $26 (8.67 days). The unchanged engine computes a $4 shortfall and $5 executable minimum. A generator yields observe, expense, decision, quote, execution, verification and restoration checkpoints; the view waits for each animation completion. Reserve is credited only after the existing verifier accepts the simulated history, swap and balance deltas. Final reserve is $31 (10.33 days), with $65 NVIDIA.
 
-HEALTHY at completion describes a verified recovery above the floor. The conservative engine classification remains WATCH within its two-day buffer and is preserved as `receipt.final.mandateState`; the hero explicitly reports the remaining 0.33-day buffer. Owner or invalid-quote checkpoints end the sequence without an adjustment. M0 failure receipts retain both USDC/Permit2 and U/EIP-3009 signing/rejection findings and address-book code 351703, unchanged balances and zero settled spend.
+Historical/superseded presentation: HEALTHY at completion described a verified recovery above the floor. The conservative engine classification remains WATCH within its two-day buffer and is preserved as `receipt.final.mandateState`; the hero explicitly reports the remaining 0.33-day buffer. Owner or invalid-quote checkpoints end the sequence without an adjustment. M0 failure receipts retain both USDC/Permit2 and U/EIP-3009 signing/rejection findings and address-book code 351703, unchanged balances and zero settled spend.
 
 Motion uses requestAnimationFrame interpolation and Web Animations completion promises. Reduced-motion users receive immediate state updates and the complete activity trail. Hidden-tab transitions finish directly; changing the preference finishes an active stage. No arbitrary sleep-based execution sequence remains. Service-worker cache version includes the new story module. Local server supports an optional PORT environment variable (default 4173).
 
 Validation: all nine original engine tests plus five new story tests pass. Browser checks cover 12.4 → 8.7 → 10.3 recovery, separate verification presentation, unchanged balances in both blocked scenarios, onboarding, keyboard activation and owner pause. Narrow viewport has no horizontal overflow. Browser error log was empty. Reduced-motion branches and CSS were reviewed; OS-level preference switching and native PWA installation were not exercised.
+
+## Pre-submission factual corrections — 2026-10-06
+
+Current standard replay: $37.20 reserve / $70 NVIDIA, $11.20 expense, $26 reserve (8.67 days), $4 shortfall, $5 simulated adjustment, $31 reserve (10.33 days) / $65 NVIDIA. Policy remains WATCH; the separate outcome is Recovery verified. Custom mandates may block, pause or need no adjustment. Earlier $30/$4 walkthrough values and the HEALTHY completion label are superseded.
+
+The public demo at https://driftmark-chi.vercel.app was verified by the completed audit at public commit 6c1f4de. This local fix pass has not been pushed or deployed. M0 purchase/conversion and Agentic Wallet provenance remain reported observations unless supported by primary records in the evidence index. Preserve the journal voice; the builder must author the final report using personal onboarding, errors, timing and improvement observations.

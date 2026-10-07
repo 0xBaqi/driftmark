@@ -1,3 +1,5 @@
+// Historical filename retained for compatibility: this quotes NVDAB → USDT on BSC (56), NOT NVDAon.
+// Read-only quote only; fixed historical amount/wallet context below; no signing or broadcast.
 import crypto from "node:crypto";
 
 const API_KEY = process.env.BINANCE_RWA_API_KEY;
